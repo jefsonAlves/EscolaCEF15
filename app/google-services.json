@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_number": "123456789012",
+    "project_id": "dummy-project",
+    "storage_bucket": "dummy-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789012:android:abcdef0123456789abcdef",
+        "android_client_info": {
+          "package_name": "com.aistudio.colegioemmovimento.xkjsdf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123456789012-abcdef0123456789abcdef0123456789.apps.googleusercontent.com",
+          "client_type": 1
+        },
+        {
+          "client_id": "123456789012-abcdef0123456789abcdef0123456789.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "dummy_api_key_for_compilation"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123456789012-abcdef0123456789abcdef0123456789.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
