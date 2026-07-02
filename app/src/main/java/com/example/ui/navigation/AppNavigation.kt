@@ -102,23 +102,27 @@ fun AppNavigation(
                         onNavigateToAttendance = { authNavController.navigate(Routes.ATTENDANCE) },
                         onNavigateToGrades = { authNavController.navigate(Routes.GRADES) },
                         onNavigateToStudentRegistration = { authNavController.navigate(Routes.STUDENT_REGISTRATION) },
-                        onLogout = { authViewModel.logout() }
+                        onLogout = { authViewModel.logout() },
+                        sharedViewModel = sharedViewModel
                     )
                 }
                 composable(Routes.TEACHER_CLASSES) {
                     TeacherClassesScreen(
                         onNavigateBack = { authNavController.popBackStack() },
-                        onOpenClass = { /* TODO */ }
+                        onOpenClass = { /* TODO */ },
+                        sharedViewModel = sharedViewModel
                     )
                 }
                 composable(Routes.ATTENDANCE) {
                     AttendanceScreen(
-                        onNavigateBack = { authNavController.popBackStack() }
+                        onNavigateBack = { authNavController.popBackStack() },
+                        sharedViewModel = sharedViewModel
                     )
                 }
                 composable(Routes.GRADES) {
                     GradesScreen(
-                        onNavigateBack = { authNavController.popBackStack() }
+                        onNavigateBack = { authNavController.popBackStack() },
+                        sharedViewModel = sharedViewModel
                     )
                 }
                 composable(Routes.STUDENT_REGISTRATION) {

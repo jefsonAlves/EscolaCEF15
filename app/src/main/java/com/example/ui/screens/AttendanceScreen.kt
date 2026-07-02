@@ -20,6 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ui.viewmodels.SharedViewModel
 
 data class StudentAttendance(
     val id: String,
@@ -37,16 +40,23 @@ enum class AttendanceStatus {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AttendanceScreen(
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    sharedViewModel: SharedViewModel = viewModel()
 ) {
-    var students by remember {
+    val realStudents by sharedViewModel.students.collectAsState()
+
+    var students by remember(realStudents) {
         mutableStateOf(
-            listOf(
-                StudentAttendance("1", "Ana Beatriz Silva", "Nº 01", "100% Freq.", true, AttendanceStatus.PRESENT),
-                StudentAttendance("2", "Bruno Fernandes", "Nº 02", "100% Freq.", true, AttendanceStatus.PRESENT),
-                StudentAttendance("3", "Carlos Oliveira", "Nº 03", "100% Freq.", true, AttendanceStatus.PRESENT),
-                StudentAttendance("4", "Daniela Mendes", "Nº 04", "100% Freq.", true, AttendanceStatus.PRESENT)
-            )
+            realStudents.mapIndexed { index, student ->
+                StudentAttendance(
+                    id = student.id,
+                    name = student.name,
+                    number = "Nº ${String.format("%02d", index + 1)}",
+                    frequency = "100% Freq.",
+                    isFrequencyGood = true,
+                    status = AttendanceStatus.PRESENT
+                )
+            }
         )
     }
 
@@ -54,7 +64,9 @@ fun AttendanceScreen(
     var highestFaultsMessage by remember { mutableStateOf("") }
     
     // Simulating saved faults
-    var savedFaults by remember { mutableStateOf(mapOf<String, Int>("1" to 0, "2" to 0, "3" to 0, "4" to 0)) }
+    var savedFaults by remember(realStudents) {
+        mutableStateOf(realStudents.associate { it.id to 0 })
+    }
 
     if (showWarningDialog) {
         AlertDialog(
@@ -226,15 +238,56 @@ fun AttendanceScreen(
                 Text("LISTA DE ALUNOS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.Bold)
             }
 
-            items(students) { student ->
-                StudentAttendanceCard(
-                    student = student,
-                    onStatusChange = { newStatus ->
-                        students = students.map {
-                            if (it.id == student.id) it.copy(status = newStatus) else it
+            if (students.isEmpty()) {
+                item {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Groups,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                modifier = Modifier.size(48.dp)
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = "Nenhum aluno cadastrado",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Cadastre alunos primeiro no botão de Cadastro na tela inicial ou no módulo de Gestão.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                            )
                         }
                     }
-                )
+                }
+            } else {
+                items(students) { student ->
+                    StudentAttendanceCard(
+                        student = student,
+                        onStatusChange = { newStatus ->
+                            students = students.map {
+                                if (it.id == student.id) it.copy(status = newStatus) else it
+                            }
+                        }
+                    )
+                }
             }
             
             item {
