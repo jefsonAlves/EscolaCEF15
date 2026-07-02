@@ -42,6 +42,10 @@ class FirebaseManager private constructor() {
         studentsRef.document(student.id).set(student).await()
     }
 
+    suspend fun deleteStudent(studentId: String) {
+        studentsRef.document(studentId).delete().await()
+    }
+
     suspend fun syncOfflineDrafts(drafts: List<DraftEntity>) {
         val batch = db.batch()
         for (draft in drafts) {

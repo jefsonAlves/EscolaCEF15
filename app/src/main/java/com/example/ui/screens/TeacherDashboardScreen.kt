@@ -28,6 +28,7 @@ fun TeacherDashboardScreen(
     onNavigateToClasses: () -> Unit,
     onNavigateToAttendance: () -> Unit,
     onNavigateToGrades: () -> Unit,
+    onNavigateToStudentRegistration: () -> Unit,
     onLogout: () -> Unit,
     authViewModel: AuthViewModel = viewModel(),
     sharedViewModel: SharedViewModel = viewModel()
@@ -231,6 +232,19 @@ fun TeacherDashboardScreen(
                         onClick = { /* TODO */ },
                         modifier = Modifier.weight(1f)
                     )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    ShortcutCard(
+                        title = "Cadastrar Aluno",
+                        icon = Icons.Default.Person,
+                        onClick = onNavigateToStudentRegistration,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
 

@@ -22,6 +22,7 @@ object Routes {
     const val TEACHER_CLASSES = "teacher_classes"
     const val ATTENDANCE = "attendance"
     const val GRADES = "grades"
+    const val STUDENT_REGISTRATION = "student_registration"
     const val PARENT_DASHBOARD = "parent_dashboard"
     const val SCHOOL_DASHBOARD = "school_dashboard"
     const val SUPER_ADMIN_DASHBOARD = "super_admin_dashboard"
@@ -100,6 +101,7 @@ fun AppNavigation(
                         onNavigateToClasses = { authNavController.navigate(Routes.TEACHER_CLASSES) },
                         onNavigateToAttendance = { authNavController.navigate(Routes.ATTENDANCE) },
                         onNavigateToGrades = { authNavController.navigate(Routes.GRADES) },
+                        onNavigateToStudentRegistration = { authNavController.navigate(Routes.STUDENT_REGISTRATION) },
                         onLogout = { authViewModel.logout() }
                     )
                 }
@@ -119,6 +121,12 @@ fun AppNavigation(
                         onNavigateBack = { authNavController.popBackStack() }
                     )
                 }
+                composable(Routes.STUDENT_REGISTRATION) {
+                    StudentRegistrationScreen(
+                        onNavigateBack = { authNavController.popBackStack() },
+                        sharedViewModel = sharedViewModel
+                    )
+                }
                 composable(Routes.PARENT_DASHBOARD) {
                     ParentDashboardScreen(
                         onLogout = { authViewModel.logout() }
@@ -127,6 +135,7 @@ fun AppNavigation(
                 composable(Routes.SCHOOL_DASHBOARD) {
                     SchoolDashboardScreen(
                         onLogout = { authViewModel.logout() },
+                        onNavigateToStudentRegistration = { authNavController.navigate(Routes.STUDENT_REGISTRATION) },
                         sharedViewModel = sharedViewModel
                     )
                 }

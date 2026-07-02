@@ -25,6 +25,7 @@ import com.example.ui.viewmodels.SharedViewModel
 @Composable
 fun SchoolDashboardScreen(
     onLogout: () -> Unit,
+    onNavigateToStudentRegistration: () -> Unit = {},
     sharedViewModel: SharedViewModel = viewModel()
 ) {
     val students by sharedViewModel.students.collectAsState()
@@ -98,6 +99,14 @@ fun SchoolDashboardScreen(
                 Text("Módulos de Gestão", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             }
             item {
+                ManagementModuleCard(
+                    title = "Gestão de Alunos",
+                    desc = "Cadastrar, listar e excluir perfis de alunos",
+                    icon = Icons.Default.Groups,
+                    onClick = onNavigateToStudentRegistration
+                )
+            }
+            item {
                 ManagementModuleCard("Gestão Acadêmica", "Turmas, Disciplinas, Notas e Diários", Icons.Default.School)
             }
             item {
@@ -129,9 +138,14 @@ fun DashboardStatCard(title: String, value: String, icon: androidx.compose.ui.gr
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ManagementModuleCard(title: String, desc: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
+fun ManagementModuleCard(
+    title: String,
+    desc: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    onClick: () -> Unit = {}
+) {
     Card(
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),

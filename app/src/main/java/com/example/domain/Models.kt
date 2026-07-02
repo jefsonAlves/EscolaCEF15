@@ -44,5 +44,7 @@ data class Student(
     val classroomId: String = "",
     val name: String = "",
     val registrationNumber: String = "",
-    val dateOfBirth: String? = null
+    val dateOfBirth: String? = null,
+    val grade: String = "",
+    val parentContact: String = ""
 )

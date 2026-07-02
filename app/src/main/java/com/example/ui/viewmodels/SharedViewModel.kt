@@ -55,4 +55,14 @@ class SharedViewModel : ViewModel() {
             }
         }
     }
+
+    fun deleteStudent(studentId: String) {
+        viewModelScope.launch {
+            try {
+                firebaseManager.deleteStudent(studentId)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }
